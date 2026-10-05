@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://lsvphkxf8mae"]
+[gd_scene load_steps=8 format=3 uid="uid://lsvphkxf8mae"]
+
+[ext_resource type="PackedScene" path="res://player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://enemy.tscn" id="2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mwb40"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -11,10 +14,36 @@ sky_material = SubResource("ProceduralSkyMaterial_mwb40")
 background_mode = 2
 sky = SubResource("Sky_80nbo")
 
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(40, 1, 40)
+
 [node name="Game" type="Node3D" unique_id=1658178714]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=622125224]
 environment = SubResource("Environment_e2o6t")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1339154287]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.4141864)
+position = Vector3(0, 16, 0)
+rotation_degrees = Vector3(-90, 0, 0)
+current = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector3(0, 1, 5)
+
+[node name="Enemy" parent="." instance=ExtResource("2")]
+position = Vector3(0, 0.5, -6)

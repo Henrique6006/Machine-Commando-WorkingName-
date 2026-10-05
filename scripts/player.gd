@@ -1,18 +1,18 @@
-extends CharacterBody2D
-## Jogador: robô que se move em 8 direções e atira na direção que está virado.
-## Placeholder de movimentação + tiro básico do Commando-like.
+extends CharacterBody3D
+## Jogador: robô que se move em um plano top-down (XZ) e atira na direção
+## que está virado. Placeholder de movimentação + tiro básico do Commando-like.
 
-@export var speed: float = 220.0
+@export var speed: float = 6.0
 @export var fire_rate: float = 0.25
 @export var max_health: int = 5
-@export var player_bullet_scene: PackedScene = preload("res://scenes/PlayerBullet.tscn")
+@export var gravity: float = 20.0
+@export var player_bullet_scene: PackedScene = preload("res://player_bullet.tscn")
 
-var facing_dir: Vector2 = Vector2.RIGHT
+var facing_dir: Vector3 = Vector3(0, 0, -1)
 var health: int
 var _can_shoot: bool = true
 
-@onready var visual: Node2D = $Visual
-@onready var muzzle: Marker2D = $Visual/Muzzle
+@onready var muzzle: Marker3D = $Muzzle
 @onready var shoot_timer: Timer = $ShootTimer
 
 
@@ -23,37 +23,41 @@ func _ready() -> void:
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var input_dir := _get_input_direction()
-	if input_dir != Vector2.ZERO:
+	if input_dir != Vector3.ZERO:
 		facing_dir = input_dir
-	velocity = input_dir * speed
+		look_at(global_position + facing_dir, Vector3.UP)
+
+	velocity.x = input_dir.x * speed
+	velocity.z = input_dir.z * speed
+
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	else:
+		velocity.y = 0.0
+
 	move_and_slide()
-	_update_visual()
 
 	if _is_shoot_pressed() and _can_shoot:
 		_shoot()
 
 
-func _get_input_direction() -> Vector2:
-	var dir := Vector2.ZERO
+func _get_input_direction() -> Vector3:
+	var dir := Vector3.ZERO
 	if Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT):
 		dir.x -= 1
 	if Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT):
 		dir.x += 1
 	if Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP):
-		dir.y -= 1
+		dir.z -= 1
 	if Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN):
-		dir.y += 1
+		dir.z += 1
 	return dir.normalized()
 
 
 func _is_shoot_pressed() -> bool:
 	return Input.is_physical_key_pressed(KEY_SPACE) or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
-
-
-func _update_visual() -> void:
-	visual.rotation = facing_dir.angle()
 
 
 func _shoot() -> void:
