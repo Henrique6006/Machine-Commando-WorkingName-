@@ -1,13 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1ieikmri0k5g"]
+[gd_scene format=3 uid="uid://b1ieikmri0k5g"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1"]
+[ext_resource type="Script" uid="uid://caew7bklgr05r" path="res://scripts/player.gd" id="1"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_o1ycc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b67ki"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4flbx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lhfrk"]
+material = SubResource("StandardMaterial3D_4flbx")
+size = Vector3(0.5, 0.5, 1)
+
 [node name="Player" type="CharacterBody3D" unique_id=496491426]
-collision_layer = 1
 collision_mask = 24
 script = ExtResource("1")
 
@@ -17,8 +23,12 @@ mesh = SubResource("CapsuleMesh_o1ycc")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=607208246]
 shape = SubResource("CapsuleShape3D_b67ki")
 
-[node name="Muzzle" type="Marker3D" parent="."]
-position = Vector3(0, 0, -0.9)
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1913798294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.9)
 
-[node name="ShootTimer" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="." unique_id=967357681]
 one_shot = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=778995669]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.29657447, -0.26830602)
+mesh = SubResource("BoxMesh_lhfrk")

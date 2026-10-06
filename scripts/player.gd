@@ -1,6 +1,4 @@
 extends CharacterBody3D
-## Jogador: robô que se move em um plano top-down (XZ) e atira na direção
-## que está virado. Placeholder de movimentação + tiro básico do Commando-like.
 
 @export var speed: float = 6.0
 @export var fire_rate: float = 0.25

@@ -1,7 +1,4 @@
 extends RigidBody3D
-## Inimigo simples: fica parado a distância (congelado como corpo estático) e
-## atira em linha reta (eixo dominante X ou Z) quando o jogador entra no raio
-## de detecção.
 
 @export var max_health: int = 3
 @export var fire_rate: float = 1.5
@@ -50,7 +47,6 @@ func _on_shoot_timer_timeout() -> void:
 func _shoot_straight_line() -> void:
 	var diff: Vector3 = _target.global_position - global_position
 	var dir: Vector3
-	# Estilo Commando: tiro travado no eixo dominante (X ou Z).
 	if absf(diff.x) > absf(diff.z):
 		dir = Vector3(signf(diff.x), 0, 0)
 	else:

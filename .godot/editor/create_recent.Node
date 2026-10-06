@@ -1,5 +1,8 @@
-CollisionShape3D
+PhantomCamera3D
+PhantomCameraHost
 MeshInstance3D
+DirectionalLight3D
+CollisionShape3D
 RigidBody3D
 CharacterBody3D
 Camera3D

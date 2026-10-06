@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cp07nmnasa626"]
+[gd_scene format=3 uid="uid://cp07nmnasa626"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
+[ext_resource type="Script" uid="uid://bf5qx3rwol4w3" path="res://scripts/enemy.gd" id="1"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_soctf"]
 
@@ -20,14 +20,12 @@ mesh = SubResource("BoxMesh_soctf")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1066501111]
 shape = SubResource("BoxShape3D_soctf")
 
-[node name="Muzzle" type="Marker3D" parent="."]
-position = Vector3(0, 0, 0)
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1524182281]
 
-[node name="ShootTimer" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="." unique_id=226609232]
 
-[node name="DetectionArea3D" type="Area3D" parent="."]
+[node name="DetectionArea3D" type="Area3D" parent="." unique_id=1882056761]
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea3D" unique_id=1077938496]
 shape = SubResource("SphereShape3D_detection")
