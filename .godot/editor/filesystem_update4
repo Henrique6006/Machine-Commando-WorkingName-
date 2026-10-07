@@ -1,2 +1,5 @@
-res://game.tscn
+res://player.tscn
 res://addons/phantom_camera/themes/theme.tres
+res://player.gdshader
+res://game.tscn
+res://enemy.tscn

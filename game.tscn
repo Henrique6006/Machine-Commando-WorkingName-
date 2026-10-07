@@ -13,6 +13,8 @@ sky_material = SubResource("ProceduralSkyMaterial_mwb40")
 [sub_resource type="Environment" id="Environment_e2o6t"]
 background_mode = 2
 sky = SubResource("Sky_80nbo")
+ambient_light_source = 2
+ambient_light_color = Color(0.9166399, 0.91663986, 0.9166398, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
 size = Vector3(40, 1, 40)
@@ -39,15 +41,15 @@ shape = SubResource("BoxShape3D_floor")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1339154287]
 physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 0.50214684, 0.8647824, 0, -0.8647824, 0.50214684, 1.1036186, 17.228325, 18.656162)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 0.07232806, 0.9973809, 0, -0.9973809, 0.07232806, 0.79610634, 9.907869, 0.5766239)
 current = true
 
 [node name="Player" parent="." unique_id=1675573017 instance=ExtResource("1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.9624119)
 
 [node name="Enemy" parent="." unique_id=1045461199 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -6)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=569518129]
-transform = Transform3D(1, 0, 0, 0, -0.7000114, -0.7141317, 0, 0.7141317, -0.7000114, 0, 56.168667, 0)
+transform = Transform3D(1, 0, 0, 0, -0.7000114, -0.7141317, 0, 0.7141317, -0.7000114, 0, 26.585957, 0)
+light_energy = 10.822
