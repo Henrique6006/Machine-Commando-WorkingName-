@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cp07nmnasa626" path="res://enemy.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://enemy_square.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://enemy_cylinder.tscn" id="4"]
+[ext_resource type="Script" uid="uid://cs32wt0w2xyyp" path="res://camera_3d.gd" id="5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mwb40"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -45,6 +46,7 @@ shape = SubResource("BoxShape3D_floor")
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 0.07232806, 0.9973809, 0, -0.9973809, 0.07232806, 0.79610634, 9.907869, 0.5766239)
 current = true
+script = ExtResource("5")
 
 [node name="Player" parent="." unique_id=1675573017 instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.9624119)

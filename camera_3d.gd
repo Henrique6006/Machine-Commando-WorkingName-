@@ -1,13 +1,18 @@
 extends Camera3D
-@onready var player = $"../Player"
+## Faz a câmera acompanhar a posição do jogador sem nunca alterar seu ângulo.
+## O deslocamento (offset) inicial entre câmera e jogador é mantido, então a
+## câmera não gira quando o jogador vira para os lados.
 
-# Called when the node enters the scene tree for the first time.
+@onready var player: Node3D = $"../Player"
+
+var _offset: Vector3
+
+
 func _ready() -> void:
-	
-	pass # Replace with function body.
+	if player:
+		_offset = global_position - player.global_position
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	position = player.position
-	pass
+func _process(_delta: float) -> void:
+	if is_instance_valid(player):
+		global_position = player.global_position + _offset
