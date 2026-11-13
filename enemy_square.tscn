@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
+[ext_resource type="PackedScene" path="res://weapon_pickup_square.tscn" id="2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_square_enemy"]
+albedo_color = Color(0.85, 0.4, 0.05, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_square_enemy"]
+material = SubResource("StandardMaterial3D_square_enemy")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_square_enemy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_square_enemy_detection"]
+radius = 18.0
+
+[node name="EnemySquare" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1")
+weapon_pickup_scene = ExtResource("2")
+movement_mode = "approach"
+move_speed = 3.5
+preferred_distance = 5.0
+distance_deadzone = 1.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_square_enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_square_enemy")
+
+[node name="Muzzle" type="Marker3D" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="DetectionArea3D" type="Area3D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea3D"]
+shape = SubResource("SphereShape3D_square_enemy_detection")
