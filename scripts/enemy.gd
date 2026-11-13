@@ -14,6 +14,11 @@ extends RigidBody3D
 @export var preferred_distance: float = 5.0
 @export var distance_deadzone: float = 1.0
 
+## Quantidade de pares de tiros extras disparados junto com o tiro central
+## (ex.: 1 par = 3 tiros no total, igual ao upgrade de tiro triplo do jogador).
+@export var extra_bullet_pairs: int = 0
+@export var shot_spread_degrees: float = 15.0
+
 var health: int
 var _target: Node3D = null
 var _player_in_range: bool = false
@@ -76,17 +81,24 @@ func _physics_process(delta: float) -> void:
 
 func _on_shoot_timer_timeout() -> void:
 	if _player_in_range and is_instance_valid(_target):
-		_shoot_straight_line()
+		_shoot_at_target()
 
 
-func _shoot_straight_line() -> void:
+func _shoot_at_target() -> void:
 	var diff: Vector3 = _target.global_position - global_position
-	var dir: Vector3
-	if absf(diff.x) > absf(diff.z):
-		dir = Vector3(signf(diff.x), 0, 0)
-	else:
-		dir = Vector3(0, 0, signf(diff.z))
+	diff.y = 0.0
+	if diff.length_squared() < 0.0001:
+		return
+	var dir: Vector3 = diff.normalized()
 
+	_fire_bullet(dir)
+	for i in range(extra_bullet_pairs):
+		var spread_angle: float = deg_to_rad(shot_spread_degrees * float(i + 1))
+		_fire_bullet(dir.rotated(Vector3.UP, spread_angle))
+		_fire_bullet(dir.rotated(Vector3.UP, -spread_angle))
+
+
+func _fire_bullet(dir: Vector3) -> void:
 	var bullet := enemy_bullet_scene.instantiate()
 	get_tree().current_scene.add_child(bullet)
 	bullet.global_position = muzzle.global_position
