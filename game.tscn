@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://b1ieikmri0k5g" path="res://player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://cp07nmnasa626" path="res://enemy.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://enemy_square.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://enemy_cylinder.tscn" id="4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mwb40"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -49,6 +51,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.9624119)
 
 [node name="Enemy" parent="." unique_id=1045461199 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -6)
+
+[node name="EnemySquare" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -6)
+
+[node name="EnemyCylinder" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, -6)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=569518129]
 transform = Transform3D(1, 0, 0, 0, -0.7000114, -0.7141317, 0, 0.7141317, -0.7000114, 0, 26.585957, 0)
