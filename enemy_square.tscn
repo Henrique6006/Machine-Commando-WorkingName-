@@ -23,6 +23,7 @@ movement_mode = "approach"
 move_speed = 3.5
 preferred_distance = 5.0
 distance_deadzone = 1.0
+extra_bullet_pairs = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_square_enemy")
