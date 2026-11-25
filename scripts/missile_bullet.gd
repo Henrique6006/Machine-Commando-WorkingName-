@@ -10,13 +10,17 @@ extends Area3D
 
 var direction: Vector3 = Vector3(0, 0, -1)
 
+@onready var visibility_notifier: VisibleOnScreenNotifier3D = get_node_or_null("VisibleOnScreenNotifier3D")
+
 
 func _ready() -> void:
 	if direction.length_squared() > 0.0001:
 		look_at(global_position + direction, Vector3.UP)
 	body_entered.connect(_on_body_entered)
+	if visibility_notifier:
+		visibility_notifier.screen_exited.connect(_destroy)
 	await get_tree().create_timer(lifetime).timeout
-	queue_free()
+	_destroy()
 
 
 func _physics_process(delta: float) -> void:
@@ -34,4 +38,9 @@ func _explode() -> void:
 			var dist: float = body.global_position.distance_to(global_position)
 			if dist <= explosion_radius:
 				body.take_damage(explosion_damage)
-	queue_free()
+	_destroy()
+
+
+func _destroy() -> void:
+	if not is_queued_for_deletion():
+		queue_free()

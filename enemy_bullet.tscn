@@ -29,3 +29,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_enemy_bullet")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_enemy_bullet")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.15, -0.15, -0.15, 0.3, 0.3, 0.3)
