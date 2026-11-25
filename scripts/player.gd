@@ -16,6 +16,13 @@ extends CharacterBody3D
 ## de novo reabastece o limite (e também soma o bônus, como antes).
 @export var shots_per_weapon: int = 20
 
+## Velocidade do dash (em unidades/seg) enquanto ele está ativo.
+@export var dash_speed: float = 18.0
+## Duração do dash, em segundos.
+@export var dash_duration: float = 0.15
+## Tempo de recarga antes de poder usar o dash novamente.
+@export var dash_cooldown: float = 0.6
+
 var facing_dir: Vector3 = Vector3(0, 0, -1)
 var health: int
 var _can_shoot: bool = true
@@ -36,8 +43,16 @@ var _shots_remaining: Dictionary = {
 	"missile": 0,
 }
 
+## Estado do dash: se está ativo, se pode ser disparado de novo e para onde ele empurra o jogador.
+var _is_dashing: bool = false
+var _can_dash: bool = true
+var _dash_dir: Vector3 = Vector3.ZERO
+var _was_dash_pressed: bool = false
+
 @onready var muzzle: Marker3D = $Muzzle
 @onready var shoot_timer: Timer = $ShootTimer
+@onready var dash_timer: Timer = $DashTimer
+@onready var dash_cooldown_timer: Timer = $DashCooldownTimer
 
 
 func _ready() -> void:
@@ -46,6 +61,12 @@ func _ready() -> void:
 	add_to_group("player")
 	shoot_timer.one_shot = true
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
+	dash_timer.one_shot = true
+	dash_timer.wait_time = dash_duration
+	dash_timer.timeout.connect(_on_dash_timer_timeout)
+	dash_cooldown_timer.one_shot = true
+	dash_cooldown_timer.wait_time = dash_cooldown
+	dash_cooldown_timer.timeout.connect(_on_dash_cooldown_timer_timeout)
 
 
 func _physics_process(delta: float) -> void:
@@ -54,8 +75,17 @@ func _physics_process(delta: float) -> void:
 		facing_dir = input_dir
 		look_at(global_position + facing_dir, Vector3.UP)
 
-	velocity.x = input_dir.x * speed
-	velocity.z = input_dir.z * speed
+	var dash_pressed := _is_dash_pressed()
+	if dash_pressed and not _was_dash_pressed and _can_dash and not _is_dashing:
+		_start_dash()
+	_was_dash_pressed = dash_pressed
+
+	if _is_dashing:
+		velocity.x = _dash_dir.x * dash_speed
+		velocity.z = _dash_dir.z * dash_speed
+	else:
+		velocity.x = input_dir.x * speed
+		velocity.z = input_dir.z * speed
 
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -83,6 +113,26 @@ func _get_input_direction() -> Vector3:
 
 func _is_shoot_pressed() -> bool:
 	return Input.is_physical_key_pressed(KEY_SPACE) or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+
+
+func _is_dash_pressed() -> bool:
+	return Input.is_physical_key_pressed(KEY_SHIFT)
+
+
+func _start_dash() -> void:
+	_is_dashing = true
+	_can_dash = false
+	_dash_dir = facing_dir
+	dash_timer.start()
+	dash_cooldown_timer.start()
+
+
+func _on_dash_timer_timeout() -> void:
+	_is_dashing = false
+
+
+func _on_dash_cooldown_timer_timeout() -> void:
+	_can_dash = true
 
 
 func _shoot() -> void:

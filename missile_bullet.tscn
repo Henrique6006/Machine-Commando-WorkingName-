@@ -35,3 +35,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_missile")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 shape = SubResource("CylinderShape3D_missile")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.15, -0.2, -0.15, 0.3, 0.4, 0.3)
